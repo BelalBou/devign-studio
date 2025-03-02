@@ -3,6 +3,7 @@ import {
   SlashCommandBuilder,
   EmbedBuilder,
   TextChannel,
+  MessageFlags
 } from 'discord.js';
 
 export const embedCommand = new SlashCommandBuilder()
@@ -35,7 +36,7 @@ export const embedCommand = new SlashCommandBuilder()
 
 export class EmbedCommand {
   static async execute(interaction: ChatInputCommandInteraction) {
-    await interaction.deferReply({ ephemeral: true }); // Cache l'exécution de la commande
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral }); 
 
     const titre = interaction.options.getString('titre');
     const image = interaction.options.getString('image');
@@ -44,14 +45,14 @@ export class EmbedCommand {
     const thumbnail = interaction.options.getString('thumbnail');
     let couleur = interaction.options.getString('couleur') || '0099ff'; // Par défaut bleu Discord
 
-    // Vérifie et nettoie la couleur fournie
+
     if (couleur.startsWith('#')) {
-      couleur = couleur.slice(1); // Enlève le #
+      couleur = couleur.slice(1); 
     }
     
-    // Vérifie si la couleur est un code hex valide
+
     if (!/^([0-9A-Fa-f]{6})$/.test(couleur)) {
-      couleur = '0099ff'; // Remet une couleur par défaut si invalide
+      couleur = '0099ff';
     }
 
     const embed = new EmbedBuilder().setColor(parseInt(couleur, 16)); // Convertir la couleur hex en décimal
@@ -62,12 +63,10 @@ export class EmbedCommand {
     if (footer) embed.setFooter({ text: footer });
     if (thumbnail) embed.setThumbnail(thumbnail);
 
-    // Vérifie si le canal est un TextChannel avant d'envoyer l'embed
     if (interaction.channel && interaction.channel.isTextBased()) {
       await (interaction.channel as TextChannel).send({ embeds: [embed] });
     }
 
-    // Supprime immédiatement la réponse pour éviter tout affichage
     await interaction.deleteReply();
   }
 }
