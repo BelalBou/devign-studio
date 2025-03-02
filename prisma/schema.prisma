@@ -6,121 +6,16 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["public", "events"]
+  schemas  = ["public"]
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
-
-  @@schema("public") 
-}
-
-model UserBot {
-  id                   String    @id
-  userId               String    @unique
-  serviceId            String?
-  nitradoToken         String?
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime
-  ftpHost              String?
-  ftpPassword          String?
-  ftpUsername          String?
-  game                 String?
-  gameHuman            String?
-  guildId              BigInt?
-  location             String?
-  locationId           Int?
-  mission              String?
-  nitradoUsername      String?
-  password             String?
-  paypalSubscriptionId String?
-  premiumType          String?
-  premiumUntil         DateTime?
-  serverName           String?
-  slots                Int?
-  status               String?
-  map                  String?   
-  platform             String?   
-
-  @@schema("public") 
-}
-
-
-
-model NPC {
-  id                Int     @id @default(autoincrement())
-  events           String  @db.Text
-  cfgspawnabletypes String  @db.Text
-  image_url        String?
-  file_name        String
-  title            String
-  description      String?
-
-  @@schema("events")
-}
-
-model Vehicle {
-  id                Int     @id @default(autoincrement())
-  events           String  @db.Text
-  cfgspawnabletypes String  @db.Text
-  image_url        String?
-  file_name        String
-  title            String
-  description      String?
-
-  @@schema("events")
-}
-
-model EventGroups {
-  id                Int     @id @default(autoincrement())
-  events           String  @db.Text
-  cfgeventspawns   String  @db.Text
-  cfgeventgroups   String  @db.Text
-  cfgspawnabletypes String? @db.Text
-  image_url        String?
-  file_name        String
-  title            String
-  description      String?
-  mission          String?
-
-
-  @@schema("events")
-}
-
-model Event {
-  id                Int     @id @default(autoincrement())
-  events           String  @db.Text
-  cfgspawnabletypes String  @db.Text
-  image_url        String?
-  file_name        String
-  title            String
-  description      String?
-
-  @@schema("events")
-}
-
-model Mapping {
-  id                Int     @id @default(autoincrement())
-  mapping          Json
-  image_url        String?
-  file_name        String
-  title            String
-  description      String?
-  mission          String?
-
-
-  @@schema("events")
-}
-
-model Loadout {
-  id                Int     @id @default(autoincrement())
-  loadout          Json
-  image_url        String?
-  file_name        String
-  title            String
-  description      String?
-
-  @@schema("events")
+  id         String @id @default(uuid()) 
+  userId     String @unique              
+  guildId    String                      
+  serverName String                     
+  createdAt  DateTime @default(now())     
+  updatedAt  DateTime @updatedAt         
+  
+  @@schema("public")
 }
